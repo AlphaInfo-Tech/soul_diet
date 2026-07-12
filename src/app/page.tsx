@@ -2,6 +2,7 @@ import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import Included from "@/components/landing/Included";
 import EventDetails from "@/components/landing/EventDetails";
+import PhotoGallery from "@/components/landing/PhotoGallery";
 import Pricing from "@/components/landing/Pricing";
 import CtaFooter from "@/components/landing/CtaFooter";
 import Footer from "@/components/landing/Footer";
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <Included />
       <EventDetails />
+      <PhotoGallery />
       <Pricing />
       <CtaFooter />
       <Footer />

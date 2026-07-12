@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <rect width="900" height="500" fill="#B5654A" opacity="0.12"/>
+  <rect x="8" y="8" width="884" height="484" fill="none" stroke="#B5654A" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="450" y="240" text-anchor="middle" font-family="sans-serif" font-size="26" fill="#B5654A">Wellness Goodie Kit</text>
+  <text x="450" y="275" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#c98567">Replace with a real event photo</text>
+</svg>
