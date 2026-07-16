@@ -28,3 +28,11 @@ export type TicketId = keyof typeof TICKETS;
 
 export const MAX_SCREENSHOT_SIZE_BYTES = 5 * 1024 * 1024;
 export const ALLOWED_SCREENSHOT_TYPES = ["image/jpeg", "image/png", "image/jpg"];
+
+export const UPI_PAYEE = {
+  vpa: "gurugayathriguru-1@oksbi",
+  name: "Soul Diet",
+} as const;
+
+export const REGISTRATION_DRAFT_KEY = "soul-diet-registration-draft";
+export const PAYMENT_UPLOAD_TIMEOUT_MS = 5 * 60 * 1000;

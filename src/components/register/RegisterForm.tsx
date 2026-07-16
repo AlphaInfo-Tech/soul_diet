@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
 import ProgressSteps from "./ProgressSteps";
 import Stage1General from "./Stage1General";
@@ -9,7 +9,7 @@ import Stage3Payment from "./Stage3Payment";
 import SuccessScreen from "./SuccessScreen";
 import { RegistrationFormState, RegisterSuccessResponse } from "@/lib/types";
 import { validateStage1, validateStage2, validateStage3 } from "@/lib/validation";
-import { TICKETS } from "@/lib/constants";
+import { TICKETS, REGISTRATION_DRAFT_KEY, PAYMENT_UPLOAD_TIMEOUT_MS } from "@/lib/constants";
 
 const initialState: RegistrationFormState = {
   stage1: { fullName: "", age: "", city: "", email: "", contactNumber: "" },
@@ -36,6 +36,88 @@ export default function RegisterForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [result, setResult] = useState<RegisterSuccessResponse | null>(null);
+  const [paymentStartedAt, setPaymentStartedAt] = useState<number | null>(null);
+  const [expiredNotice, setExpiredNotice] = useState(false);
+  const isFirstRender = useRef(true);
+
+  function resetForExpiry() {
+    setForm(initialState);
+    setStep(1);
+    setErrors({});
+    setSubmitError("");
+    setPaymentStartedAt(null);
+    setExpiredNotice(true);
+    try {
+      sessionStorage.removeItem(REGISTRATION_DRAFT_KEY);
+    } catch {
+      // Non-critical.
+    }
+  }
+
+  // Restore an in-progress draft (e.g. if the tab was reloaded while the
+  // user was away completing a UPI payment in another app). One-time sync
+  // from sessionStorage on mount — must run after mount since it's
+  // unavailable during server rendering. Also covers the case where the
+  // 5-minute payment window already lapsed while the tab was gone.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(REGISTRATION_DRAFT_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const alreadyExpired =
+          parsed.paymentStartedAt &&
+          !parsed.form?.stage3?.screenshotBase64 &&
+          Date.now() - parsed.paymentStartedAt >= PAYMENT_UPLOAD_TIMEOUT_MS;
+
+        if (alreadyExpired) {
+          sessionStorage.removeItem(REGISTRATION_DRAFT_KEY);
+          // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from sessionStorage, not derivable from props/state
+          setExpiredNotice(true);
+        } else {
+          if (parsed.form) setForm(parsed.form);
+          if (parsed.step) setStep(parsed.step);
+          if (parsed.paymentStartedAt) setPaymentStartedAt(parsed.paymentStartedAt);
+        }
+      }
+    } catch {
+      // Ignore malformed/unavailable storage — form just starts empty.
+    }
+  }, []);
+
+  // Persist on every change, skipping the very first render so we don't
+  // clobber a draft we're about to restore above.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (result) return;
+    try {
+      const serializable = {
+        form: { ...form, stage3: { ...form.stage3, screenshotFile: null } },
+        step,
+        paymentStartedAt,
+      };
+      sessionStorage.setItem(REGISTRATION_DRAFT_KEY, JSON.stringify(serializable));
+    } catch {
+      // Storage full/unavailable — not critical, just skip persisting.
+    }
+  }, [form, step, result, paymentStartedAt]);
+
+  // Catch the more common case: the tab survives in the background the
+  // whole time, and the user simply switches back to it after paying.
+  useEffect(() => {
+    function handleVisibility() {
+      if (document.visibilityState !== "visible") return;
+      if (!paymentStartedAt) return;
+      if (form.stage3.screenshotBase64) return;
+      if (Date.now() - paymentStartedAt >= PAYMENT_UPLOAD_TIMEOUT_MS) {
+        resetForExpiry();
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [paymentStartedAt, form.stage3.screenshotBase64]);
 
   function goNext() {
     let stageErrors: Record<string, string> = {};
@@ -53,6 +135,10 @@ export default function RegisterForm() {
     setErrors({});
     setStep((s) => Math.max(1, s - 1));
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handlePayAttempt() {
+    setPaymentStartedAt(Date.now());
   }
 
   async function handleSubmit() {
@@ -103,6 +189,11 @@ export default function RegisterForm() {
         return;
       }
 
+      try {
+        sessionStorage.removeItem(REGISTRATION_DRAFT_KEY);
+      } catch {
+        // Non-critical.
+      }
       setResult(data as RegisterSuccessResponse);
     } catch {
       setSubmitError("We couldn't reach the server. Please check your connection and try again.");
@@ -117,11 +208,21 @@ export default function RegisterForm() {
       <ProgressSteps current={step} />
 
       <div className="mt-10 rounded-3xl bg-white/70 p-6 shadow-sm sm:p-8">
+        {expiredNotice && (
+          <p className="mb-4 rounded-xl bg-terracotta/10 px-4 py-3 text-sm text-terracotta">
+            Your session expired because the payment screenshot wasn&apos;t
+            uploaded in time. Please fill in your details again.
+          </p>
+        )}
+
         {step === 1 && (
           <Stage1General
             data={form.stage1}
             errors={errors}
-            onChange={(patch) => setForm((f) => ({ ...f, stage1: { ...f.stage1, ...patch } }))}
+            onChange={(patch) => {
+              setExpiredNotice(false);
+              setForm((f) => ({ ...f, stage1: { ...f.stage1, ...patch } }));
+            }}
           />
         )}
         {step === 2 && (
@@ -136,6 +237,8 @@ export default function RegisterForm() {
             data={form.stage3}
             errors={errors}
             onChange={(patch) => setForm((f) => ({ ...f, stage3: { ...f.stage3, ...patch } }))}
+            paymentStartedAt={paymentStartedAt}
+            onPayAttempt={handlePayAttempt}
           />
         )}
 

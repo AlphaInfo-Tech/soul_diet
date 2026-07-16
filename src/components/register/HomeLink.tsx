@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { REGISTRATION_DRAFT_KEY } from "@/lib/constants";
 
 export default function HomeLink() {
   const router = useRouter();
@@ -9,7 +10,14 @@ export default function HomeLink() {
     const confirmed = window.confirm(
       "Leave registration? Your form details entered so far will be cleared."
     );
-    if (confirmed) router.push("/");
+    if (confirmed) {
+      try {
+        sessionStorage.removeItem(REGISTRATION_DRAFT_KEY);
+      } catch {
+        // Non-critical.
+      }
+      router.push("/");
+    }
   }
 
   return (
