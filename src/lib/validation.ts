@@ -52,6 +52,7 @@ export function validateStage3(data: Stage3Data): Record<string, string> {
   const errors: Record<string, string> = {};
 
   if (!data.ticketId) errors.ticketId = "Please select a ticket.";
+  if (!data.utr.trim()) errors.utr = "Please enter your UTR / Transaction ID.";
   if (!data.screenshotBase64) errors.screenshotFile = "Please upload your payment screenshot.";
 
   return errors;

@@ -17,7 +17,7 @@ export interface Stage2Data {
 }
 
 export interface Stage3Data {
-  ticketId: "SOUND_HEALING" | "SOUND_HEALING_ICE_BATH" | "";
+  ticketId: "SOUND_HEALING_ICE_BATH" | "";
   utr: string;
   screenshotFile: File | null;
   screenshotBase64: string;
@@ -47,6 +47,15 @@ export interface RegisterRequestBody {
   screenshotBase64: string;
   screenshotName: string;
   website?: string; // honeypot
+}
+
+export interface LeadRequestBody {
+  leadId: string;
+  fullName: string;
+  age: number;
+  city: string;
+  email: string;
+  contactNumber: string;
 }
 
 export interface RegisterSuccessResponse {

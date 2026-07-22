@@ -21,7 +21,7 @@ const initialState: RegistrationFormState = {
     consentAgreed: false,
   },
   stage3: {
-    ticketId: "",
+    ticketId: "SOUND_HEALING_ICE_BATH",
     utr: "",
     screenshotFile: null,
     screenshotBase64: "",
@@ -39,6 +39,7 @@ export default function RegisterForm() {
   const [paymentStartedAt, setPaymentStartedAt] = useState<number | null>(null);
   const [expiredNotice, setExpiredNotice] = useState(false);
   const isFirstRender = useRef(true);
+  const [leadId, setLeadId] = useState(() => crypto.randomUUID());
 
   function resetForExpiry() {
     setForm(initialState);
@@ -77,6 +78,7 @@ export default function RegisterForm() {
           if (parsed.form) setForm(parsed.form);
           if (parsed.step) setStep(parsed.step);
           if (parsed.paymentStartedAt) setPaymentStartedAt(parsed.paymentStartedAt);
+          if (parsed.leadId) setLeadId(parsed.leadId);
         }
       }
     } catch {
@@ -97,12 +99,13 @@ export default function RegisterForm() {
         form: { ...form, stage3: { ...form.stage3, screenshotFile: null } },
         step,
         paymentStartedAt,
+        leadId,
       };
       sessionStorage.setItem(REGISTRATION_DRAFT_KEY, JSON.stringify(serializable));
     } catch {
       // Storage full/unavailable — not critical, just skip persisting.
     }
-  }, [form, step, result, paymentStartedAt]);
+  }, [form, step, result, paymentStartedAt, leadId]);
 
   // Catch the more common case: the tab survives in the background the
   // whole time, and the user simply switches back to it after paying.
@@ -126,9 +129,30 @@ export default function RegisterForm() {
 
     setErrors(stageErrors);
     if (Object.keys(stageErrors).length === 0) {
+      if (step === 1) saveStage1Lead();
       setStep((s) => Math.min(3, s + 1));
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  }
+
+  // Best-effort background save of Stage 1 details so a lead is captured
+  // even if the user never completes the rest of the form. Never awaited
+  // and never allowed to affect stage progression.
+  function saveStage1Lead() {
+    fetch("/api/register-lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        leadId,
+        fullName: form.stage1.fullName.trim(),
+        age: Number(form.stage1.age),
+        city: form.stage1.city.trim(),
+        email: form.stage1.email.trim(),
+        contactNumber: form.stage1.contactNumber.trim(),
+      }),
+    }).catch(() => {
+      // Non-critical: the full details are still captured at final submission.
+    });
   }
 
   function goBack() {

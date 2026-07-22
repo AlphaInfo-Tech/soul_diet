@@ -1,25 +1,18 @@
 export const EVENT = {
   name: "SOUL DIET",
   tagline: "A Wellness Experience for Business Owners",
-  dateLabel: "19 July 2026, Sunday",
-  timeLabel: "9:30 AM – 3:00 PM",
+  dateLabel: "2 August 2026, Sunday",
+  timeLabel: "9:30 AM – 5:00 PM",
   location: "Foothills Open Learning Centre, Salem, Tamil Nadu",
   year: 2026,
 } as const;
 
 export const TICKETS = {
-  SOUND_HEALING: {
-    id: "SOUND_HEALING",
-    label: "Sound Healing",
-    fullLabel: "Sound Healing – ₹2,999",
-    amount: 2999,
-    ticketType: "Sound Healing",
-  },
   SOUND_HEALING_ICE_BATH: {
     id: "SOUND_HEALING_ICE_BATH",
     label: "Sound Healing + Ice Bath",
-    fullLabel: "Sound Healing + Ice Bath – ₹3,999",
-    amount: 3999,
+    fullLabel: "Sound Healing + Ice Bath – ₹4,999",
+    amount: 4999,
     ticketType: "Sound Healing + Ice Bath",
   },
 } as const;

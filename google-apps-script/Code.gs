@@ -33,9 +33,26 @@ const SHEET_HEADERS = [
   "Status",
 ];
 
+const LEADS_SHEET_NAME = "General Leads";
+const LEADS_SHEET_HEADERS = [
+  "Timestamp",
+  "Lead ID",
+  "Full Name",
+  "Age",
+  "City",
+  "Email",
+  "Contact Number",
+  "Last Updated",
+];
+
 function doPost(e) {
   try {
     const payload = JSON.parse(e.postData.contents);
+
+    if (payload.type === "stage1_lead") {
+      return handleStage1Lead_(payload);
+    }
+
     const error = validatePayload_(payload);
     if (error) return jsonOutput_({ success: false, error: error });
 
@@ -72,16 +89,79 @@ function validatePayload_(p) {
 }
 
 function getSheet_() {
+  return getOrCreateSheet_(SHEET_NAME, SHEET_HEADERS);
+}
+
+function getOrCreateSheet_(name, headers) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
+  let sheet = ss.getSheetByName(name);
   if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAME);
+    sheet = ss.insertSheet(name);
   }
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(SHEET_HEADERS);
+    sheet.appendRow(headers);
     sheet.setFrozenRows(1);
   }
   return sheet;
+}
+
+function handleStage1Lead_(payload) {
+  const error = validateLeadPayload_(payload);
+  if (error) return jsonOutput_({ success: false, error: error });
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+
+  try {
+    const sheet = getOrCreateSheet_(LEADS_SHEET_NAME, LEADS_SHEET_HEADERS);
+    const now = new Date();
+    const existingRow = findRowByLeadId_(sheet, payload.leadId);
+
+    if (existingRow) {
+      sheet
+        .getRange(existingRow, 3, 1, 6)
+        .setValues([[
+          payload.fullName,
+          payload.age,
+          payload.city,
+          payload.email,
+          payload.contactNumber,
+          now,
+        ]]);
+    } else {
+      sheet.appendRow([
+        now,
+        payload.leadId,
+        payload.fullName,
+        payload.age,
+        payload.city,
+        payload.email,
+        payload.contactNumber,
+        now,
+      ]);
+    }
+  } finally {
+    lock.releaseLock();
+  }
+
+  return jsonOutput_({ success: true });
+}
+
+function validateLeadPayload_(p) {
+  if (!p.leadId) return "Missing session identifier.";
+  if (!p.fullName || !p.email || !p.contactNumber) return "Missing required fields.";
+  return null;
+}
+
+function findRowByLeadId_(sheet, leadId) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return null;
+
+  const values = sheet.getRange(2, 2, lastRow - 1, 1).getValues(); // column B
+  for (let i = 0; i < values.length; i++) {
+    if (String(values[i][0]) === String(leadId)) return i + 2;
+  }
+  return null;
 }
 
 function generateUniqueRegistrationNo_(sheet) {

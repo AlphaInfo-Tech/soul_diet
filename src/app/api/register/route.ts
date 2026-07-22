@@ -57,6 +57,8 @@ function validate(body: Partial<RegisterRequestBody>): string | null {
   );
   if (!validTicket) return "Invalid ticket selection.";
 
+  if (!body.utr?.trim()) return "UTR / Transaction ID is required.";
+
   if (!body.screenshotBase64) return "Payment screenshot is required.";
   const match = DATA_URL_RE.exec(body.screenshotBase64);
   if (!match) return "Payment screenshot must be a valid image upload.";

@@ -197,11 +197,12 @@ export default function Stage3Payment({
 
       <TextField
         id="utr"
-        label="UTR / Transaction ID (optional)"
+        label="UTR / Transaction ID"
         value={data.utr}
         onChange={(e) => onChange({ utr: e.target.value })}
         placeholder="12-digit reference number"
-        hint="Helps us match your payment faster, but it's okay to skip."
+        hint="Helps us match your payment faster."
+        error={errors.utr}
       />
     </div>
   );
