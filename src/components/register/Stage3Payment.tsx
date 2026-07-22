@@ -169,6 +169,12 @@ export default function Stage3Payment({
           Please upload your screenshot within 5 minutes of paying, or
           you&apos;ll need to start over.
         </p>
+        <p className="mt-3 text-xs text-ink/50">
+          For queries, call{" "}
+          <a href="tel:7759988447" className="font-medium text-green">
+            7759988447
+          </a>
+        </p>
       </div>
 
       <div ref={screenshotFieldRef}>
