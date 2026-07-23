@@ -23,7 +23,7 @@ export default function CtaFooter() {
           <Link href="/register">
             <Button
               variant="ghost"
-              className="w-full bg-[#e9e2d7] text-ink hover:bg-[#ddd0ac] sm:w-auto"
+              className="w-full bg-[#f8f2e7] text-ink hover:bg-[#ddd0ac] sm:w-auto"
             >
               Register Now
             </Button>
