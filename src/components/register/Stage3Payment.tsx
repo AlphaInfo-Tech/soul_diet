@@ -7,7 +7,7 @@ import {
   UPI_PAYEE,
   PAYMENT_UPLOAD_TIMEOUT_MS,
 } from "@/lib/constants";
-import { buildUpiLink } from "@/lib/upi";
+import { buildUpiLink, UpiApp } from "@/lib/upi";
 import { FieldWrapper, TextField } from "./FormFields";
 import DynamicQr from "./DynamicQr";
 
@@ -18,6 +18,16 @@ interface Props {
   paymentStartedAt: number | null;
   onPayAttempt: () => void;
 }
+
+// Distinct app-specific schemes (rather than the generic upi:// link) so a
+// tap always opens the intended payment app, even on phones where WhatsApp
+// has been set as the default handler for the generic upi:// scheme.
+const PAYMENT_APPS: { app: UpiApp; label: string }[] = [
+  { app: "gpay", label: "Google Pay" },
+  { app: "phonepe", label: "PhonePe" },
+  { app: "paytm", label: "Paytm" },
+  { app: "generic", label: "Other UPI Apps" },
+];
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -77,14 +87,18 @@ export default function Stage3Payment({
     setShowWelcomeBack(false);
   }
 
-  const upiLink = selectedTicket
-    ? buildUpiLink({
-        payeeVpa: UPI_PAYEE.vpa,
-        payeeName: UPI_PAYEE.name,
-        amount: selectedTicket.amount,
-        transactionNote: `SOULDIET-2026 ${selectedTicket.label}`,
-      })
-    : null;
+  function buildPaymentLink(app: UpiApp) {
+    if (!selectedTicket) return null;
+    return buildUpiLink({
+      payeeVpa: UPI_PAYEE.vpa,
+      payeeName: UPI_PAYEE.name,
+      amount: selectedTicket.amount,
+      transactionNote: `SOULDIET-2026 ${selectedTicket.label}`,
+      app,
+    });
+  }
+
+  const upiLink = buildPaymentLink("generic");
 
   return (
     <div className="space-y-6">
@@ -149,16 +163,25 @@ export default function Stage3Payment({
         </p>
 
         {selectedTicket && (
-          <a
-            href={upiLink ?? undefined}
-            onClick={() => {
-              awaitingReturnRef.current = true;
-              onPayAttempt();
-            }}
-            className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-green px-6 py-3 text-sm font-medium text-cream-light transition-colors hover:bg-green-dark sm:w-auto"
-          >
-            Pay via UPI App
-          </a>
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {PAYMENT_APPS.map(({ app, label }) => (
+              <a
+                key={app}
+                href={buildPaymentLink(app) ?? undefined}
+                onClick={() => {
+                  awaitingReturnRef.current = true;
+                  onPayAttempt();
+                }}
+                className={`inline-flex items-center justify-center rounded-full px-4 py-3 text-sm font-medium transition-colors ${
+                  app === "generic"
+                    ? "border border-ink/15 text-ink hover:border-ink/30"
+                    : "bg-green text-cream-light hover:bg-green-dark"
+                }`}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
         )}
 
         <p className="mt-4 text-xs text-ink/50">

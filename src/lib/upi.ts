@@ -1,11 +1,27 @@
+export type UpiApp = "generic" | "gpay" | "phonepe" | "paytm";
+
+const SCHEME_PREFIX: Record<UpiApp, string> = {
+  generic: "upi://pay",
+  gpay: "tez://upi/pay",
+  phonepe: "phonepe://pay",
+  paytm: "paytmmp://pay",
+};
+
 interface UpiLinkParams {
   payeeVpa: string;
   payeeName: string;
   amount: number;
   transactionNote: string;
+  app?: UpiApp;
 }
 
-export function buildUpiLink({ payeeVpa, payeeName, amount, transactionNote }: UpiLinkParams): string {
+export function buildUpiLink({
+  payeeVpa,
+  payeeName,
+  amount,
+  transactionNote,
+  app = "generic",
+}: UpiLinkParams): string {
   const params = new URLSearchParams({
     pa: payeeVpa,
     pn: payeeName,
@@ -13,5 +29,5 @@ export function buildUpiLink({ payeeVpa, payeeName, amount, transactionNote }: U
     cu: "INR",
     tn: transactionNote,
   });
-  return `upi://pay?${params.toString()}`;
+  return `${SCHEME_PREFIX[app]}?${params.toString()}`;
 }
