@@ -1,9 +1,10 @@
 export const EVENT = {
   name: "SOUL DIET",
   tagline: "A Wellness Experience for Business Owners",
-  dateLabel: "2 August 2026, Sunday",
+  dateLabel: "30th August 2026, Sunday",
   timeLabel: "9:30 AM – 5:00 PM",
-  location: "Foothills Open Learning Centre, Salem, Tamil Nadu",
+  location: "Sukha Yoga & Wellness, Chennai, Greater Chennai, Tamil Nadu",
+  city: "Chennai",
   year: 2026,
 } as const;
 

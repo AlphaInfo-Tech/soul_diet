@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import HomeLink from "@/components/register/HomeLink";
 import RegisterForm from "@/components/register/RegisterForm";
+import { EVENT } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Register — SOUL DIET",
-  description: "Reserve your seat for the Soul Diet wellness experience in Salem, 19 July 2026.",
+  description: `Reserve your seat for the Soul Diet wellness experience in ${EVENT.city}, ${EVENT.dateLabel}.`,
 };
 
 export default function RegisterPage() {

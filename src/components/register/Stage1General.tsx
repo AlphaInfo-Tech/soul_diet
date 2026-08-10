@@ -46,7 +46,7 @@ export default function Stage1General({ data, errors, onChange }: Props) {
         value={data.city}
         onChange={(e) => onChange({ city: e.target.value })}
         error={errors.city}
-        placeholder="e.g. Salem"
+        placeholder="e.g. Chennai"
         autoComplete="address-level2"
       />
 

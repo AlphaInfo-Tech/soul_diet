@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { EVENT } from "@/lib/constants";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -17,8 +18,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "SOUL DIET — A Wellness Experience for Business Owners",
-  description:
-    "Pause. Reset. Realign. Sound Healing and Ice Bath experience for business owners in Salem, Tamil Nadu — 19 July 2026.",
+  description: `Pause. Reset. Realign. Sound Healing and Ice Bath experience for business owners in ${EVENT.city}, Tamil Nadu — ${EVENT.dateLabel}.`,
 };
 
 export default function RootLayout({
