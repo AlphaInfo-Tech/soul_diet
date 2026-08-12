@@ -1,9 +1,18 @@
-const STEPS = ["General Details", "Medical Details", "Payment"];
+const REGISTRATION_STEPS = ["General Details", "Medical Details", "Payment"];
 
-export default function ProgressSteps({ current }: { current: number }) {
+interface ProgressStepsProps {
+  current: number;
+  /** Defaults to the event registration's three stages. */
+  steps?: readonly string[];
+}
+
+export default function ProgressSteps({
+  current,
+  steps = REGISTRATION_STEPS,
+}: ProgressStepsProps) {
   return (
     <ol className="mx-auto flex max-w-md items-center justify-between">
-      {STEPS.map((label, i) => {
+      {steps.map((label, i) => {
         const step = i + 1;
         const isDone = step < current;
         const isActive = step === current;
@@ -27,7 +36,7 @@ export default function ProgressSteps({ current }: { current: number }) {
                 {label}
               </span>
             </div>
-            {step < STEPS.length && (
+            {step < steps.length && (
               <div
                 className={`mx-2 h-px flex-1 ${
                   isDone ? "bg-green" : "bg-ink/15"

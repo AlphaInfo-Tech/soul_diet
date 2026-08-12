@@ -2,11 +2,19 @@ import { SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
+/**
+ * Every icon spreads `{...base} {...props}`, so props land second and any of
+ * these can still be overridden at the call site (QuoteIcon does exactly that).
+ */
 const base = {
   viewBox: "0 0 24 24",
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.5,
+  // These render from 14px up to 32px; 1.5 went soft at the small end.
+  strokeWidth: 1.7,
+  // Decorative everywhere — an adjacent text label or the wrapping control's
+  // aria-label always carries the meaning.
+  "aria-hidden": true,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
 };
@@ -56,6 +64,38 @@ export function SparkleIcon(props: IconProps) {
     <svg {...base} {...props}>
       <path d="M12 3c.6 3.4 1.6 4.4 5 5-3.4.6-4.4 1.6-5 5-.6-3.4-1.6-4.4-5-5 3.4-.6 4.4-1.6 5-5Z" />
       <path d="M19 15c.3 1.7.8 2.2 2.5 2.5-1.7.3-2.2.8-2.5 2.5-.3-1.7-.8-2.2-2.5-2.5 1.7-.3 2.2-.8 2.5-2.5Z" />
+    </svg>
+  );
+}
+
+export function RefreshIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M20 12a8 8 0 0 1-13.7 5.6M4 12a8 8 0 0 1 13.7-5.6" />
+      <path d="M17.5 3.5v3.2h-3.2M6.5 20.5v-3.2h3.2" />
+    </svg>
+  );
+}
+
+export function LotusIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="5.5" r="2" />
+      <path d="M12 9.5c-2 0-3.5 1.6-3.5 3.5 0 1 .3 1.8.8 2.5" />
+      <path d="M12 9.5c2 0 3.5 1.6 3.5 3.5 0 1-.3 1.8-.8 2.5" />
+      <path d="M4 18.5c1.8-2 4.6-2 4.6-2M20 18.5c-1.8-2-4.6-2-4.6-2" />
+      <path d="M8.6 16.5c1 1.2 2.1 1.8 3.4 1.8s2.4-.6 3.4-1.8" />
+    </svg>
+  );
+}
+
+export function PeopleIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="8" r="2.6" />
+      <path d="M7.5 19c0-2.5 2-4.2 4.5-4.2s4.5 1.7 4.5 4.2" />
+      <path d="M6 10.8a2 2 0 1 0-.6-3.9M4 17c0-1.7.7-3 2-3.6" />
+      <path d="M18 10.8a2 2 0 1 1 .6-3.9M20 17c0-1.7-.7-3-2-3.6" />
     </svg>
   );
 }
@@ -123,6 +163,109 @@ export function HandshakeIcon(props: IconProps) {
       <path d="M21.5 12.5 18 9l-3.5 3 3.5 3.5c.6.6 1.6.6 2.2 0L21.5 14" />
       <path d="M9.5 12 12 14.3c.6.6 1.6.6 2.2 0l.3-.3" />
       <path d="M6 9l2.8-2.2a2 2 0 0 1 2.5 0L12 7.3l.7-.5a2 2 0 0 1 2.5 0L18 9" />
+    </svg>
+  );
+}
+
+export function MenuIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  );
+}
+
+export function CloseIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 12h15" />
+      <path d="m13.5 6.5 6 5.5-6 5.5" />
+    </svg>
+  );
+}
+
+export function MailIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="5.5" width="18" height="13" rx="2" />
+      <path d="m3.8 7 7 5.3c.7.5 1.7.5 2.4 0l7-5.3" />
+    </svg>
+  );
+}
+
+export function PhoneIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M7.5 3.5h-2a2 2 0 0 0-2 2.2C4.2 13.4 10.6 19.8 18.3 20.5a2 2 0 0 0 2.2-2v-2a1.5 1.5 0 0 0-1.2-1.5l-2.6-.5a1.5 1.5 0 0 0-1.5.6l-.8 1.1a12.5 12.5 0 0 1-5-5l1.1-.8a1.5 1.5 0 0 0 .6-1.5l-.5-2.6a1.5 1.5 0 0 0-1.5-1.2Z" />
+    </svg>
+  );
+}
+
+export function WhatsAppIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3.5 20.5 5 16.4A8 8 0 1 1 8.2 19.5l-4.7 1Z" />
+      <path d="M9 8.6c-.3.7-.2 1.6.4 2.6a8 8 0 0 0 3.4 3.4c1 .6 1.9.7 2.6.4l.5-1.7-2-.9-.8.8a6 6 0 0 1-1.9-1.9l.8-.8-.9-2-1.7.5Z" />
+    </svg>
+  );
+}
+
+export function InstagramIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="16.9" cy="7.1" r=".9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function QuoteIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props} strokeWidth={0} fill="currentColor">
+      <path d="M9.4 5.5C6.3 6.9 4.4 9.6 4.4 13v5.5h6.4V12H7.6c0-2 .9-3.4 2.9-4.3l-1.1-2.2Zm10 0c-3.1 1.4-5 4.1-5 7.5v5.5h6.4V12h-3.2c0-2 .9-3.4 2.9-4.3l-1.1-2.2Z" />
+    </svg>
+  );
+}
+
+export function BookIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15.5H5.5A1.5 1.5 0 0 1 4 18V5.5Z" />
+      <path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v15.5h5.5A1.5 1.5 0 0 0 20 18V5.5Z" />
+    </svg>
+  );
+}
+
+export function CheckIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m5 12.5 4.5 4.5L19 7.5" />
+    </svg>
+  );
+}
+
+export function HeartIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 20s-7.5-4.7-7.5-9.5a4.3 4.3 0 0 1 7.5-2.8 4.3 4.3 0 0 1 7.5 2.8C19.5 15.3 12 20 12 20Z" />
+    </svg>
+  );
+}
+
+export function SunIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
     </svg>
   );
 }

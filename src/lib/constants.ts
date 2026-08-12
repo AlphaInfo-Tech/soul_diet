@@ -1,20 +1,32 @@
 export const EVENT = {
   name: "SOUL DIET",
-  tagline: "A Wellness Experience for Business Owners",
+  /** The event itself — the /event page leads with this, not the brand name. */
+  title: "One Day Retreat",
+  tagline: "A Wellness Experience",
+  motto: "Pause. Reset. Realign.",
   dateLabel: "30th August 2026, Sunday",
   timeLabel: "9:30 AM – 5:00 PM",
   location: "Sukha Yoga & Wellness, Chennai, Greater Chennai, Tamil Nadu",
   city: "Chennai",
   year: 2026,
+  /**
+   * Numbers printed on the event poster. The first is also `CONTACT.phone` in
+   * site-content.ts — kept here too because these are event facts, and that
+   * file's header asks for event facts to live in this one.
+   */
+  registrationPhones: [
+    { display: "77599 88447", href: "tel:+917759988447" },
+    { display: "90030 51789", href: "tel:+919003051789" },
+  ],
 } as const;
 
 export const TICKETS = {
-  SOUND_HEALING_ICE_BATH: {
-    id: "SOUND_HEALING_ICE_BATH",
-    label: "Sound Healing + Ice Bath",
-    fullLabel: "Sound Healing + Ice Bath – ₹4,999",
+  ONE_DAY_RETREAT: {
+    id: "ONE_DAY_RETREAT",
+    label: "One Day Retreat",
+    fullLabel: "One Day Retreat – ₹4,999",
     amount: 4999,
-    ticketType: "Sound Healing + Ice Bath",
+    ticketType: "One Day Retreat",
   },
 } as const;
 

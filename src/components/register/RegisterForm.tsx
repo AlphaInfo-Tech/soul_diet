@@ -21,7 +21,7 @@ const initialState: RegistrationFormState = {
     consentAgreed: false,
   },
   stage3: {
-    ticketId: "SOUND_HEALING_ICE_BATH",
+    ticketId: "ONE_DAY_RETREAT",
     utr: "",
     screenshotFile: null,
     screenshotBase64: "",

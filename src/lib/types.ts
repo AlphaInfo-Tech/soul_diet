@@ -17,7 +17,7 @@ export interface Stage2Data {
 }
 
 export interface Stage3Data {
-  ticketId: "SOUND_HEALING_ICE_BATH" | "";
+  ticketId: "ONE_DAY_RETREAT" | "";
   utr: string;
   screenshotFile: File | null;
   screenshotBase64: string;
@@ -29,6 +29,46 @@ export interface RegistrationFormState {
   stage2: Stage2Data;
   stage3: Stage3Data;
 }
+
+/** Step 2 of the one-to-one booking. `hour` is the slot's IST start hour. */
+export interface AppointmentData {
+  date: string; // YYYY-MM-DD
+  hour: number | null;
+}
+
+export interface OneToOneFormState {
+  stage1: Stage1Data;
+  appointment: AppointmentData;
+}
+
+export interface OneToOneLeadRequestBody {
+  bookingId: string;
+  fullName: string;
+  age: number;
+  city: string;
+  email: string;
+  contactNumber: string;
+}
+
+export interface OneToOneRequestBody extends OneToOneLeadRequestBody {
+  date: string;
+  hour: number;
+  website?: string; // honeypot
+}
+
+export interface OneToOneSuccessResponse {
+  success: true;
+  fullName: string;
+  date: string;
+  hour: number;
+}
+
+export interface OneToOneErrorResponse {
+  success: false;
+  error: string;
+}
+
+export type OneToOneResponse = OneToOneSuccessResponse | OneToOneErrorResponse;
 
 export interface RegisterRequestBody {
   fullName: string;
@@ -56,6 +96,23 @@ export interface LeadRequestBody {
   city: string;
   email: string;
   contactNumber: string;
+}
+
+export interface ContactFormState {
+  fullName: string;
+  email: string;
+  contactNumber: string;
+  subject: string;
+  message: string;
+}
+
+export interface ContactRequestBody extends ContactFormState {
+  website?: string; // honeypot
+}
+
+export interface ContactResponse {
+  success: boolean;
+  error?: string;
 }
 
 export interface RegisterSuccessResponse {

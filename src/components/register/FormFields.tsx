@@ -1,4 +1,9 @@
-import { InputHTMLAttributes, TextareaHTMLAttributes, ReactNode } from "react";
+import {
+  InputHTMLAttributes,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+  ReactNode,
+} from "react";
 
 interface FieldWrapperProps {
   label: string;
@@ -57,6 +62,42 @@ export function TextAreaField({ label, error, hint, id, className = "", ...props
         className={`${inputBaseClass} resize-none ${error ? "border-terracotta" : "border-ink/15"} ${className}`}
         {...props}
       />
+    </FieldWrapper>
+  );
+}
+
+interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  label: string;
+  error?: string;
+  hint?: string;
+  options: readonly string[];
+  placeholder?: string;
+}
+
+export function SelectField({
+  label,
+  error,
+  hint,
+  id,
+  options,
+  placeholder,
+  className = "",
+  ...props
+}: SelectFieldProps) {
+  return (
+    <FieldWrapper label={label} htmlFor={id} error={error} hint={hint}>
+      <select
+        id={id}
+        className={`${inputBaseClass} appearance-none ${error ? "border-terracotta" : "border-ink/15"} ${className}`}
+        {...props}
+      >
+        {placeholder && <option value="">{placeholder}</option>}
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
     </FieldWrapper>
   );
 }

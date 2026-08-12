@@ -10,8 +10,8 @@ const DETAILS = [
 ] as const;
 
 const TONE_CLASSES = {
-  green: "bg-green text-cream-light",
-  terracotta: "bg-terracotta text-cream-light",
+  green: "bg-green/10 text-green",
+  terracotta: "bg-terracotta/10 text-terracotta",
 };
 
 export default function EventDetails() {
@@ -20,21 +20,31 @@ export default function EventDetails() {
       className="bg-cream"
       decoration={<SectionBlobs colors={["bg-terracotta/20", "bg-green-dark/20"]} wash={null} />}
     >
-      <div className="grid gap-5 sm:grid-cols-3">
+      <div className="flex items-center gap-4">
+        <h2 className="font-display text-lg font-bold text-ink">Event Details</h2>
+        <span aria-hidden="true" className="h-0.5 w-16 rounded-full bg-terracotta/30" />
+      </div>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
         {DETAILS.map((d) => (
           <div
             key={d.label}
-            className="rounded-2xl bg-white p-6 text-center shadow-md ring-1 ring-ink/5 transition-transform hover:-translate-y-0.5"
+            // items-start, not centred: the location value wraps to several
+            // lines and the icon should stay level with the label.
+            className="flex items-start gap-3 rounded-xl bg-white p-4 ring-1 ring-ink/5"
           >
             <div
-              className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${TONE_CLASSES[d.tone]}`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${TONE_CLASSES[d.tone]}`}
             >
-              <span className="h-7 w-7">{d.icon}</span>
+              <span className="h-5 w-5">{d.icon}</span>
             </div>
-            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.15em] text-terracotta">
-              {d.label}
-            </p>
-            <p className="mt-1.5 text-lg font-semibold text-ink">{d.value}</p>
+
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-ink/50">
+                {d.label}
+              </p>
+              <p className="mt-0.5 text-sm font-bold text-ink">{d.value}</p>
+            </div>
           </div>
         ))}
       </div>

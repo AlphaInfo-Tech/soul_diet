@@ -1,4 +1,6 @@
+import Link from "next/link";
 import Section from "./Section";
+import Button from "@/components/Button";
 import IconBadge from "@/components/IconBadge";
 import {
   LeafIcon,
@@ -39,6 +41,14 @@ export default function EmotionalHook() {
           </li>
         ))}
       </ul>
+
+      <div className="mx-auto mt-10 max-w-xl text-center">
+        <Link href="/register">
+          <Button className="w-full shadow-lg shadow-green/25 hover:shadow-xl hover:shadow-green/30 sm:w-auto">
+            Register Now
+          </Button>
+        </Link>
+      </div>
     </Section>
   );
 }

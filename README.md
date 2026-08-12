@@ -1,9 +1,42 @@
-# SOUL DIET — Event Registration Website
+# SOUL DIET — Brand Website + Event Registration
 
-Single-page marketing site + 3-stage registration flow for the Soul Diet
-wellness event. Next.js (App Router) + Tailwind CSS v4 on the frontend;
-Google Sheets + Google Drive (via a Google Apps Script Web App) as the
-backend of record — no database.
+Marketing website (Home / About / Services / Gallery / Testimonial /
+Contact Us) plus the 3-stage registration flow for the Soul Diet wellness
+event. Next.js (App Router) + Tailwind CSS v4 on the frontend; Google Sheets
++ Google Drive (via a Google Apps Script Web App) as the backend of record —
+no database.
+
+## Routes
+
+| Route | What it is |
+|---|---|
+| `/` | Brand homepage — condensed sections linking to the deep pages |
+| `/about` | Gayathri's story, the practices she follows, self-enquiry questions |
+| `/services` | The five offerings in full, precautions, benefits, FAQs |
+| `/gallery` | Full photo grid with a keyboard-accessible lightbox |
+| `/testimonials` | Participant stories (**placeholders — see below**) |
+| `/contact` | Contact form + direct channels + community links |
+| `/event` | The Sound Healing + Ice Bath event landing page |
+| `/register` | 3-stage registration funnel (no site nav — deliberately focused) |
+| `/one-to-one` | 2-step consultation booking — details, then date + time slot |
+
+Everything except `/register` and `/one-to-one` lives in the `src/app/(site)/`
+route group, which supplies the shared header and footer. `(site)` is a route
+group, so it does not appear in URLs.
+
+## Content you must replace before launch
+
+All marketing copy lives in one file:
+[src/lib/site-content.ts](src/lib/site-content.ts). Search it for `TODO` —
+every placeholder is marked. At minimum you need to fill in:
+
+- `CONTACT` — phone, email, WhatsApp, Instagram, and the city/address
+- `TESTIMONIALS` — every entry is a labelled placeholder right now
+- The `one-to-one` service — confirm it is actually offered
+
+Event, ticket and payment facts stay in
+[src/lib/constants.ts](src/lib/constants.ts) — don't duplicate them into
+`site-content.ts`.
 
 ## Stack
 
@@ -87,14 +120,20 @@ If you ever change the script's code, you must **Deploy → Manage deployments
 → Edit (pencil icon) → New version → Deploy** for the change to go live —
 saving the file alone does not update the deployed `/exec` URL's behavior.
 
-### Step 5 — Set the environment variable
+### Step 5 — Set the environment variables
 
-1. Copy `.env.local.example` to a new file named `.env.local`.
-2. Set the variable to the `/exec` URL you copied in Step 4:
+1. Create a file named `.env.local` in the project root.
+2. Set the Apps Script variable to the `/exec` URL you copied in Step 4, and
+   the site URL to wherever the site is served from:
 
    ```
    GOOGLE_APPS_SCRIPT_WEB_APP_URL=https://script.google.com/macros/s/AKfycb.../exec
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
    ```
+
+   `NEXT_PUBLIC_SITE_URL` is read at **build time** for canonical URLs,
+   `sitemap.xml` and Open Graph tags — set it to the real domain in Vercel
+   (e.g. `https://souldiet.in`), not localhost.
 
 3. Restart `npm run dev` if it was already running (env vars are only read
    on startup).
@@ -123,26 +162,103 @@ to match the new filename.
 If the submission fails, check the terminal running `npm run dev` for the
 error Next.js logged, and double-check the URL from Step 4/5.
 
+### Step 8 — Test the contact form
+
+The contact form posts to `/api/contact`, which relays to the same Apps
+Script Web App with `type: "contact_enquiry"`.
+
+⚠️ **This requires re-deploying the script.** `Code.gs` now handles a third
+payload type, and saving the file is not enough — go to **Deploy → Manage
+deployments → Edit (pencil) → New version → Deploy**. Until you do, contact
+submissions fail with `"Invalid ticket selection."` because the old deployed
+version falls through to the registration branch.
+
+Once redeployed:
+
+1. Submit the form at http://localhost:3000/contact.
+2. Confirm a row appears in the Sheet's new `Contact Enquiries` tab.
+
+### Step 9 — Set up one-to-one bookings (Google Calendar)
+
+`/one-to-one` books an hour-long consultation and writes it straight to a
+Google Calendar. There are no extra credentials to manage: Apps Script's
+built-in `CalendarApp` runs as whichever account owns the script.
+
+**Slots are hourly, 9:00 AM to 5:00 PM IST (the last one ends at 6:00 PM),
+bookable from tomorrow up to 30 days ahead.** To change that, edit
+`SLOT_START_HOURS` / `BOOKING_WINDOW_DAYS` in
+[src/lib/one-to-one.ts](src/lib/one-to-one.ts) — the form and the server-side
+check both read from there.
+
+1. **Pick the calendar.** Use your own, or make a dedicated one in Google
+   Calendar (**Other calendars → + → Create new calendar**).
+2. **Copy its ID.** Calendar settings → **Integrate calendar** → **Calendar
+   ID**. It looks like `abc123…@group.calendar.google.com`, or is simply your
+   email address for your default calendar.
+3. **Paste it into `Code.gs`**, into the `ONE_TO_ONE_CALENDAR_ID` constant near
+   the top. The account running the script must have edit rights on that
+   calendar — if it doesn't, bookings fail with a "calendar not found" message.
+4. **Redeploy** (see the warning below), then submit one test booking. Apps
+   Script will show a one-time authorisation prompt the first time it touches
+   your calendar — accept it.
+
+⚠️ **Redeploying is required, again.** `Code.gs` now handles two more payload
+types (`one_to_one_lead`, `one_to_one_booking`). Saving the file is not enough
+— **Deploy → Manage deployments → Edit (pencil) → New version → Deploy**.
+Until you do, one-to-one bookings fail because the old deployed version falls
+through to the registration branch.
+
+Confirm afterwards:
+
+- A `One-to-One Bookings` tab appears in the Sheet.
+- Completing **step 1 only** and closing the tab leaves a row with
+  `Status = Lead` and no appointment — that's the lead capture.
+- Completing both steps flips the same row to `Status = Confirmed`, fills in
+  the date/slot, and puts the event on the calendar at the right IST time.
+- Booking a slot that is already taken is refused with "That time slot has
+  just been booked" rather than double-booking you.
+
 ---
 
 ## Deploying to production (Vercel)
 
 1. Push this repo to GitHub.
 2. In Vercel, **Add New → Project**, import the GitHub repo.
-3. Before the first deploy, add the environment variable: **Settings →
-   Environment Variables** → add `GOOGLE_APPS_SCRIPT_WEB_APP_URL` with the
-   same `/exec` value from Step 4 above (add it for Production, Preview, and
-   Development).
+3. Before the first deploy, go to **Settings → Environment Variables** and add
+   (for Production, Preview, and Development):
+   - `GOOGLE_APPS_SCRIPT_WEB_APP_URL` — the `/exec` value from Step 4
+   - `NEXT_PUBLIC_SITE_URL` — the real public origin, e.g.
+     `https://souldiet.in`. This one is baked in at build time, so changing it
+     later requires a redeploy.
 4. Deploy.
-5. Repeat the Step 7 test against your live `*.vercel.app` URL before
-   sharing the link publicly (e.g. in an Instagram bio).
+5. Repeat the Step 7 and Step 8 tests against your live URL before sharing the
+   link publicly (e.g. in an Instagram bio).
 
 ## Project structure
 
 ```
-src/app/                 landing page, /register, /api/register
-src/components/landing/  landing page sections
+src/app/(site)/          brand pages — /, /about, /services, /gallery,
+                         /testimonials, /contact, /event (shared header/footer)
+src/app/register/        3-stage registration funnel (no site nav)
+src/app/api/             /register, /register-lead, /contact route handlers
+src/app/sitemap.ts       generated sitemap.xml
+src/app/robots.ts        generated robots.txt
+src/components/site/     header, footer, page hero, service/testimonial cards,
+                         gallery lightbox
+src/components/landing/  event page sections (also reused on the homepage)
 src/components/register/ 3-stage form, progress indicator, success screen
+src/components/contact/  contact form
+src/lib/site-content.ts  ALL marketing copy — edit here, not in components
 src/lib/                 shared types, constants, validation, PDF generator
 google-apps-script/      Code.gs — paste into the Apps Script editor
 ```
+
+## Assets still needed
+
+The Drive folder's contents could not be pulled automatically. Drop these in
+when you have them:
+
+- `public/founder.jpg` — portrait of Gayathri for the About page
+- additional `public/gallery/*.jpg` (add them to `GALLERY_PHOTOS` in
+  `src/lib/site-content.ts`)
+- `public/og-image.jpg` — 1200×630 social preview image

@@ -1,21 +1,20 @@
-import Header from "@/components/landing/Header";
+import type { Metadata } from "next";
 import Hero from "@/components/landing/Hero";
 import Included from "@/components/landing/Included";
-import EventDetails from "@/components/landing/EventDetails";
-import PhotoGallery from "@/components/landing/PhotoGallery";
 import CtaFooter from "@/components/landing/CtaFooter";
-import Footer from "@/components/landing/Footer";
+import { EVENT } from "@/lib/constants";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "One Day Retreat — Sound Healing + Ice Bath in Chennai",
+  description: `${EVENT.motto} A one day wellness retreat in ${EVENT.city} — sound healing, ice bath experience, guided reset and meaningful connection. ${EVENT.dateLabel}. Food and refreshments provided.`,
+};
+
+export default function EventPage() {
   return (
-    <main className="flex-1">
-      <Header />
+    <>
       <Hero />
       <Included />
-      <EventDetails />
-      <PhotoGallery />
       <CtaFooter />
-      <Footer />
-    </main>
+    </>
   );
 }
