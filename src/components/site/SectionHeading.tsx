@@ -3,6 +3,8 @@ interface SectionHeadingProps {
   title: string;
   lede?: string;
   align?: "center" | "left";
+  /** Flush the lede on both edges instead of following `align`. */
+  justifyLede?: boolean;
 }
 
 export default function SectionHeading({
@@ -10,6 +12,7 @@ export default function SectionHeading({
   title,
   lede,
   align = "center",
+  justifyLede = false,
 }: SectionHeadingProps) {
   const alignment = align === "center" ? "text-center" : "text-left";
 
@@ -25,7 +28,7 @@ export default function SectionHeading({
         <p
           className={`mt-4 max-w-2xl text-base leading-relaxed text-ink/75 ${
             align === "center" ? "mx-auto" : ""
-          }`}
+          } ${justifyLede ? "text-justify hyphens-auto" : ""}`}
         >
           {lede}
         </p>

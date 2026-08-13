@@ -17,7 +17,7 @@ export default function TestimonialCard({
       )}
 
       <blockquote
-        className={`flex-1 text-sm leading-relaxed text-ink/80 ${headline ? "mt-2" : "mt-4"}`}
+        className={`flex-1 text-justify text-sm leading-relaxed text-ink/80 hyphens-auto ${headline ? "mt-2" : "mt-4"}`}
       >
         {quote}
       </blockquote>

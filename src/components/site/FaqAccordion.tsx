@@ -32,7 +32,7 @@ export default function FaqAccordion({ faqs }: { faqs: readonly Faq[] }) {
                 </span>
               </summary>
 
-              <p className="mt-3.5 max-w-[500px] text-sm leading-[1.75] text-ink/70 sm:text-justify">
+              <p className="mt-3.5 max-w-[500px] text-justify text-sm leading-[1.75] text-ink/70 hyphens-auto">
                 {faq.a}
               </p>
             </details>

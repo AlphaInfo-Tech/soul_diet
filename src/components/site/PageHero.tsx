@@ -5,10 +5,18 @@ interface PageHeroProps {
   eyebrow: string;
   title: string;
   lede?: string;
+  /** Flush the lede on both edges instead of following the centred heading. */
+  justifyLede?: boolean;
   children?: ReactNode;
 }
 
-export default function PageHero({ eyebrow, title, lede, children }: PageHeroProps) {
+export default function PageHero({
+  eyebrow,
+  title,
+  lede,
+  justifyLede = false,
+  children,
+}: PageHeroProps) {
   return (
     <section className="relative overflow-hidden px-6 pt-16 pb-12 sm:pt-20 sm:pb-16">
       <SectionBlobs colors={["bg-green-dark/25", "bg-terracotta/20"]} />
@@ -21,7 +29,11 @@ export default function PageHero({ eyebrow, title, lede, children }: PageHeroPro
           {title}
         </h1>
         {lede && (
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink/75 sm:text-lg">
+          <p
+            className={`mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink/75 sm:text-lg ${
+              justifyLede ? "text-justify hyphens-auto" : ""
+            }`}
+          >
             {lede}
           </p>
         )}

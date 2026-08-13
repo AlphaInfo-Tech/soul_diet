@@ -113,7 +113,7 @@ function Hero() {
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link href={ONE_TO_ONE_HREF} className="w-full sm:w-auto">
             <Button className="w-full shadow-lg shadow-green/25 hover:shadow-xl hover:shadow-green/30 sm:w-auto">
-              Book a One-to-One
+              Book One-to-One
             </Button>
           </Link>
           <Link href="/event" className="w-full sm:w-auto">
@@ -146,7 +146,7 @@ function WhatIsSoulDiet() {
           <br />
           But what do we feed our mind?
         </p>
-        <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-ink/75">
+        <p className="mx-auto mt-6 max-w-2xl text-justify leading-relaxed text-ink/75 hyphens-auto">
           Soul Diet is a 21-day guided practice where you are put through
           various practices and taught to meditate — not as an escape from your
           life, but as a way of finding yourself inside it. Ten minutes a day, a
@@ -192,7 +192,7 @@ function AboutPreview() {
 
         <p className="mt-3 text-sm font-medium text-green">{SITE.founderRole}</p>
 
-        <div className="mt-6 space-y-4 leading-relaxed text-ink/80 sm:text-justify">
+        <div className="mt-6 space-y-4 text-justify leading-relaxed text-ink/80 hyphens-auto">
           {ABOUT_PARAGRAPHS.slice(0, 2).map((p) => (
             <p key={p.slice(0, 40)}>{p}</p>
           ))}
@@ -300,7 +300,7 @@ function WhyMeditation() {
                 <span className="mr-4 flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-green/12 text-[11px] font-semibold text-green ring-1 ring-green/15">
                   {i + 1}
                 </span>
-                <p className="pt-0.5 text-sm leading-relaxed text-ink/75">
+                <p className="pt-0.5 text-sm leading-relaxed text-ink/75 text-justify hyphens-auto">
                   {paragraph}
                 </p>
               </li>

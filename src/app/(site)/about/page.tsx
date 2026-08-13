@@ -30,9 +30,9 @@ export default function AboutPage() {
 
       <Section>
         <div className="rounded-3xl bg-white/70 p-8 shadow-sm sm:p-12">
-          {/* Justified only from `sm` up — the phone column is too narrow a
-              measure for it without opening rivers between words. */}
-          <div className="space-y-5 leading-relaxed text-ink/80 sm:text-justify">
+          {/* `hyphens-auto` earns the justification on a phone-width measure —
+              without it the narrow column opens rivers between words. */}
+          <div className="space-y-5 text-justify leading-relaxed text-ink/80 hyphens-auto">
             {ABOUT_PARAGRAPHS.map((p) => (
               <p key={p.slice(0, 40)}>{p}</p>
             ))}

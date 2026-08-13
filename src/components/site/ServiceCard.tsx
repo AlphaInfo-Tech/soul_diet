@@ -29,7 +29,9 @@ export default function ServiceCard({ service, variant = "compact" }: ServiceCar
         {service.format} · {service.duration}
       </p>
 
-      <p className="mt-3 text-sm leading-relaxed text-ink/75">{service.summary}</p>
+      <p className="mt-3 text-justify text-sm leading-relaxed text-ink/75 hyphens-auto">
+        {service.summary}
+      </p>
 
       {variant === "full" && (
         <ul className="mt-5 space-y-2.5 border-t border-ink/10 pt-5">

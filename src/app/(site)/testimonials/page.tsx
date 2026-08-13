@@ -21,6 +21,7 @@ export default function TestimonialsPage() {
         eyebrow="Testimonial"
         title="In their words"
         lede="This is my small story of mental transformation — will you share yours, and inspire us with it?"
+        justifyLede
       />
 
       <Section width="wide">
@@ -36,6 +37,7 @@ export default function TestimonialsPage() {
           eyebrow="Share your story"
           title="Your transformation might be someone's starting point"
           lede="If a practice shifted something for you — however small — writing it down helps the next person believe it is possible."
+          justifyLede
         />
 
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">

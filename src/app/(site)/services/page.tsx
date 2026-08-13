@@ -35,7 +35,7 @@ export default function ServicesPage() {
           title="Precautions, honestly stated"
         />
 
-        <div className="mt-8 rounded-2xl border border-terracotta/25 bg-terracotta/5 p-6 sm:p-8 sm:text-justify">
+        <div className="mt-8 rounded-2xl border border-terracotta/25 bg-terracotta/5 p-6 text-justify hyphens-auto sm:p-8">
           <p className="leading-relaxed text-ink/80">
             If you are pregnant, a heart patient, have a breathing problem, or
             have had any kind of surgery, please ask your doctor before doing
@@ -47,7 +47,7 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <p className="mt-8 text-sm leading-relaxed text-ink/65">
+        <p className="mt-8 text-justify text-sm leading-relaxed text-ink/65 hyphens-auto">
           These sessions are a practice in meditation and mental fitness. They
           are not a substitute for medical care, therapy or psychiatric
           treatment. If you are in crisis, please reach out to a qualified

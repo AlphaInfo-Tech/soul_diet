@@ -118,7 +118,7 @@ export default function ExperienceZone({ services }: { services: Service[] }) {
             One at a time.
           </em>
         </h2>
-        <p className="mt-4 text-base leading-relaxed text-ink/75">
+        <p className="mt-4 text-justify text-base leading-relaxed text-ink/75 hyphens-auto">
           Pick a practice to see what it involves, how long it runs, and what a
           session actually looks like — step by step.
         </p>
@@ -195,7 +195,7 @@ export default function ExperienceZone({ services }: { services: Service[] }) {
             </div>
           )}
 
-          <p className="mt-5 text-sm leading-relaxed text-ink/75">
+          <p className="mt-5 text-justify text-sm leading-relaxed text-ink/75 hyphens-auto">
             {active.summary}
           </p>
 
@@ -264,7 +264,7 @@ export default function ExperienceZone({ services }: { services: Service[] }) {
               </span>
             </div>
 
-            <p className="mt-3 text-sm leading-relaxed text-ink/80">
+            <p className="mt-3 text-justify text-sm leading-relaxed text-ink/80 hyphens-auto">
               {steps[step]}
             </p>
           </div>
