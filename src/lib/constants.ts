@@ -24,8 +24,8 @@ export const TICKETS = {
   ONE_DAY_RETREAT: {
     id: "ONE_DAY_RETREAT",
     label: "One Day Retreat",
-    fullLabel: "One Day Retreat – ₹4,999",
-    amount: 4999,
+    fullLabel: "One Day Retreat – ₹5,999",
+    amount: 5999,
     ticketType: "One Day Retreat",
   },
 } as const;
