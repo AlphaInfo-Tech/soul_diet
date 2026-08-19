@@ -1,4 +1,4 @@
-import { TICKETS } from "./constants";
+import { EVENT_LOCATIONS, TICKETS } from "./constants";
 import { validateAppointmentWindow } from "./one-to-one";
 import {
   AppointmentData,
@@ -31,6 +31,17 @@ export function validateStage1(data: Stage1Data): Record<string, string> {
     errors.contactNumber = "Please enter your contact number.";
   else if (!INDIA_PHONE_RE.test(data.contactNumber.trim()))
     errors.contactNumber = "Enter a valid 10-digit Indian mobile number.";
+
+  return errors;
+}
+
+export function validateEventLocation(value: string): Record<string, string> {
+  const errors: Record<string, string> = {};
+
+  // Membership check, not just truthiness — a draft restored from
+  // sessionStorage can carry a location that no longer exists.
+  if (!value || !EVENT_LOCATIONS.some((l) => l.label === value))
+    errors.eventLocation = "Please select your event location.";
 
   return errors;
 }

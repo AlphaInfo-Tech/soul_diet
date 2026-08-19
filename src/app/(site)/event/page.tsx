@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function EventPage() {
   return (
     <>
-      <Hero />
+      <Hero showAllLocations />
       <Included />
       <CtaFooter />
     </>

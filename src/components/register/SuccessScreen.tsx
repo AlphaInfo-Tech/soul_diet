@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import Button from "@/components/Button";
-import { EVENT } from "@/lib/constants";
 import { downloadSummaryPdf } from "@/lib/pdf";
 import { RegisterSuccessResponse } from "@/lib/types";
 
@@ -46,11 +45,11 @@ export default function SuccessScreen({ result }: { result: RegisterSuccessRespo
         </div>
         <div className="flex justify-between border-b border-ink/10 py-2">
           <span className="text-ink/50">Date</span>
-          <span className="font-medium">{EVENT.dateLabel}</span>
+          <span className="font-medium">{result.eventDate}</span>
         </div>
         <div className="flex justify-between py-2">
           <span className="text-ink/50">Location</span>
-          <span className="text-right font-medium">{EVENT.location}</span>
+          <span className="text-right font-medium">{result.eventLocation}</span>
         </div>
       </div>
 

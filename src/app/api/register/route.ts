@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { RegisterRequestBody, RegisterResponse } from "@/lib/types";
-import { MAX_SCREENSHOT_SIZE_BYTES, ALLOWED_SCREENSHOT_TYPES, TICKETS } from "@/lib/constants";
+import {
+  MAX_SCREENSHOT_SIZE_BYTES,
+  ALLOWED_SCREENSHOT_TYPES,
+  TICKETS,
+  EVENT_LOCATIONS,
+} from "@/lib/constants";
 
 export const runtime = "nodejs";
 
@@ -51,6 +56,11 @@ function validate(body: Partial<RegisterRequestBody>): string | null {
     return "Please provide medication details.";
 
   if (body.consentAgreed !== true) return "You must confirm and agree to the consent statement.";
+
+  const validLocation = EVENT_LOCATIONS.some(
+    (l) => l.city === body.eventLocation && l.dateLabel === body.eventDate
+  );
+  if (!validLocation) return "Please select a valid event location.";
 
   const validTicket = Object.values(TICKETS).find(
     (t) => t.ticketType === body.ticketType && t.amount === body.amount
@@ -116,6 +126,8 @@ export async function POST(req: NextRequest) {
         onMedication: body.onMedication,
         medicationDetails: body.medicationDetails ?? "",
         consentAgreed: body.consentAgreed,
+        eventLocation: body.eventLocation,
+        eventDate: body.eventDate,
         ticketType: body.ticketType,
         amount: body.amount,
         utr: body.utr ?? "",
@@ -137,6 +149,8 @@ export async function POST(req: NextRequest) {
       ticketType: body.ticketType!,
       amount: body.amount!,
       fullName: body.fullName!.trim(),
+      eventLocation: body.eventLocation!,
+      eventDate: body.eventDate!,
     };
     return NextResponse.json(successBody, { status: 200 });
   } catch (err) {

@@ -25,6 +25,12 @@ export interface Stage3Data {
 }
 
 export interface RegistrationFormState {
+  /**
+   * Which retreat the participant is registering for — kept outside
+   * `stage1` because `Stage1Data` is also used by the unrelated
+   * one-to-one booking flow, which has no event location to pick.
+   */
+  eventLocation: string;
   stage1: Stage1Data;
   stage2: Stage2Data;
   stage3: Stage3Data;
@@ -81,6 +87,8 @@ export interface RegisterRequestBody {
   onMedication: YesNo;
   medicationDetails: string | null;
   consentAgreed: boolean;
+  eventLocation: string;
+  eventDate: string;
   ticketType: string;
   amount: number;
   utr: string | null;
@@ -121,6 +129,8 @@ export interface RegisterSuccessResponse {
   ticketType: string;
   amount: number;
   fullName: string;
+  eventLocation: string;
+  eventDate: string;
 }
 
 export interface RegisterErrorResponse {

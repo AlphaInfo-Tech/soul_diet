@@ -32,6 +32,20 @@ export const TICKETS = {
 
 export type TicketId = keyof typeof TICKETS;
 
+/** The two retreat dates currently open for registration. */
+export const EVENT_LOCATIONS = [
+  {
+    city: "Chennai",
+    dateLabel: "30th August 2026 (Sunday)",
+    label: "Chennai – 30th August 2026 (Sunday)",
+  },
+  {
+    city: "Salem",
+    dateLabel: "6th September 2026 (Sunday)",
+    label: "Salem – 6th September 2026 (Sunday)",
+  },
+] as const;
+
 export const MAX_SCREENSHOT_SIZE_BYTES = 5 * 1024 * 1024;
 export const ALLOWED_SCREENSHOT_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 

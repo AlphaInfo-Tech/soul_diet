@@ -33,9 +33,9 @@ export async function downloadSummaryPdf(result: RegisterSuccessResponse) {
     ["Full Name", result.fullName],
     ["Ticket Type", result.ticketType],
     ["Amount Paid", `Rs. ${result.amount.toLocaleString("en-IN")}`],
-    ["Event Date", EVENT.dateLabel],
+    ["Event Date", result.eventDate],
     ["Event Time", EVENT.timeLabel],
-    ["Location", EVENT.location],
+    ["Location", result.eventLocation],
   ];
 
   y += 28;

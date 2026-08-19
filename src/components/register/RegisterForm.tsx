@@ -8,10 +8,21 @@ import Stage2Medical from "./Stage2Medical";
 import Stage3Payment from "./Stage3Payment";
 import SuccessScreen from "./SuccessScreen";
 import { RegistrationFormState, RegisterSuccessResponse } from "@/lib/types";
-import { validateStage1, validateStage2, validateStage3 } from "@/lib/validation";
-import { TICKETS, REGISTRATION_DRAFT_KEY, PAYMENT_UPLOAD_TIMEOUT_MS } from "@/lib/constants";
+import {
+  validateEventLocation,
+  validateStage1,
+  validateStage2,
+  validateStage3,
+} from "@/lib/validation";
+import {
+  TICKETS,
+  EVENT_LOCATIONS,
+  REGISTRATION_DRAFT_KEY,
+  PAYMENT_UPLOAD_TIMEOUT_MS,
+} from "@/lib/constants";
 
 const initialState: RegistrationFormState = {
+  eventLocation: "",
   stage1: { fullName: "", age: "", city: "", email: "", contactNumber: "" },
   stage2: {
     hasMedicalCondition: "",
@@ -124,7 +135,8 @@ export default function RegisterForm() {
 
   function goNext() {
     let stageErrors: Record<string, string> = {};
-    if (step === 1) stageErrors = validateStage1(form.stage1);
+    if (step === 1)
+      stageErrors = { ...validateEventLocation(form.eventLocation), ...validateStage1(form.stage1) };
     if (step === 2) stageErrors = validateStage2(form.stage2);
 
     setErrors(stageErrors);
@@ -174,6 +186,7 @@ export default function RegisterForm() {
     setSubmitError("");
 
     const ticket = TICKETS[form.stage3.ticketId as keyof typeof TICKETS];
+    const location = EVENT_LOCATIONS.find((l) => l.label === form.eventLocation);
 
     try {
       const res = await fetch("/api/register", {
@@ -196,6 +209,8 @@ export default function RegisterForm() {
               ? form.stage2.medicationDetails.trim()
               : null,
           consentAgreed: form.stage2.consentAgreed,
+          eventLocation: location?.city ?? "",
+          eventDate: location?.dateLabel ?? "",
           ticketType: ticket.ticketType,
           amount: ticket.amount,
           utr: form.stage3.utr.trim() || null,
@@ -247,6 +262,14 @@ export default function RegisterForm() {
               setExpiredNotice(false);
               setForm((f) => ({ ...f, stage1: { ...f.stage1, ...patch } }));
             }}
+            eventLocation={{
+              value: form.eventLocation,
+              error: errors.eventLocation,
+              onChange: (value) => {
+                setExpiredNotice(false);
+                setForm((f) => ({ ...f, eventLocation: value }));
+              },
+            }}
           />
         )}
         {step === 2 && (
@@ -263,6 +286,7 @@ export default function RegisterForm() {
             onChange={(patch) => setForm((f) => ({ ...f, stage3: { ...f.stage3, ...patch } }))}
             paymentStartedAt={paymentStartedAt}
             onPayAttempt={handlePayAttempt}
+            eventLocationLabel={form.eventLocation}
           />
         )}
 

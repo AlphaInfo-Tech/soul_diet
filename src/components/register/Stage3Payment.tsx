@@ -17,6 +17,8 @@ interface Props {
   onChange: (patch: Partial<Stage3Data>) => void;
   paymentStartedAt: number | null;
   onPayAttempt: () => void;
+  /** The city – date label picked in Stage 1, shown here as a reminder. */
+  eventLocationLabel: string;
 }
 
 // Distinct app-specific schemes (rather than the generic upi:// link) so a
@@ -44,6 +46,7 @@ export default function Stage3Payment({
   onChange,
   paymentStartedAt,
   onPayAttempt,
+  eventLocationLabel,
 }: Props) {
   const selectedTicket = data.ticketId ? TICKETS[data.ticketId] : null;
   const awaitingReturnRef = useRef(false);
@@ -108,6 +111,12 @@ export default function Stage3Payment({
           Pick your ticket, complete the payment, and upload your screenshot as proof.
         </p>
       </div>
+
+      {eventLocationLabel && (
+        <p className="rounded-xl bg-green/10 px-4 py-3 text-center text-sm font-medium text-green">
+          {eventLocationLabel}
+        </p>
+      )}
 
       <FieldWrapper label="Select Ticket" error={errors.ticketId}>
         <div className="space-y-3">

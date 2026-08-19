@@ -12,10 +12,22 @@ import {
   RefreshIcon,
 } from "@/components/icons/WellnessIcons";
 
-const DETAILS = [
-  { icon: <CalendarIcon />, label: "Date", value: EVENT.dateLabel, tone: "green" },
-  { icon: <ClockIcon />, label: "Time", value: EVENT.timeLabel, tone: "terracotta" },
-  { icon: <MapPinIcon />, label: "Location", value: EVENT.location, tone: "green" },
+// Every retreat currently open for registration. Chennai draws straight from
+// the EVENT constant used elsewhere on the site; Salem is new copy, kept in
+// the same date/time format as Chennai's for a consistent plaque.
+const LOCATIONS = [
+  {
+    name: "Chennai",
+    dateLabel: EVENT.dateLabel,
+    timeLabel: EVENT.timeLabel,
+    location: EVENT.location,
+  },
+  {
+    name: "Salem",
+    dateLabel: "6th September 2026, Sunday",
+    timeLabel: "9:00 AM – 6:00 PM",
+    location: "Foothills Open Learning Centre, Salem, Tamil Nadu",
+  },
 ] as const;
 
 // The poster's three words, each with its own mark.
@@ -30,7 +42,18 @@ const TONE_CLASSES = {
   terracotta: "bg-terracotta/10 text-terracotta",
 };
 
-export default function Hero() {
+interface HeroProps {
+  /**
+   * Show every retreat's date/time/location plaque, not just the first.
+   * Only the /event page opts into this — the home page hero stays a
+   * single-event teaser so it doesn't get crowded.
+   */
+  showAllLocations?: boolean;
+}
+
+export default function Hero({ showAllLocations = false }: HeroProps) {
+  const locations = showAllLocations ? LOCATIONS : LOCATIONS.slice(0, 1);
+
   return (
     <section className="relative overflow-hidden px-6 pt-16 pb-16 sm:pt-20 sm:pb-20">
       {/* The retreat itself, faded almost to nothing — texture behind the words
@@ -77,47 +100,61 @@ export default function Hero() {
           ))}
         </ul>
 
-        <div className="mt-6 flex items-center justify-center gap-4">
-          <span aria-hidden="true" className="h-px w-10 bg-terracotta/40 sm:w-16" />
-          <p className="font-display text-2xl tracking-[0.12em] text-green uppercase sm:text-3xl">
-            {EVENT.city}
-          </p>
-          <span aria-hidden="true" className="h-px w-10 bg-terracotta/40 sm:w-16" />
-        </div>
-
-        <p className="mx-auto mt-5 inline-block rounded-full bg-green/10 px-4 py-1.5 text-lg font-medium text-green">
+        <p className="mx-auto mt-6 inline-block rounded-full bg-green/10 px-4 py-1.5 text-lg font-medium text-green">
           {EVENT.tagline}
         </p>
 
-        {/* The details are the point of this page — one panel, three columns,
-            so they read as a single plaque rather than three loose boxes. */}
-        <div className="mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl bg-transparent ring-1 ring-ink/10">
-          <span
-            aria-hidden="true"
-            className="block h-0.5 bg-gradient-to-r from-green/50 via-terracotta/50 to-green/50"
-          />
+        {/* The details are the point of this page — one panel per retreat,
+            three columns each, so they read as a plaque rather than loose
+            boxes. Stacked with space-y when more than one location shows. */}
+        <div className="mx-auto mt-8 max-w-3xl space-y-6">
+          {locations.map((loc) => {
+            const details = [
+              { icon: <CalendarIcon />, label: "Date", value: loc.dateLabel, tone: "green" },
+              { icon: <ClockIcon />, label: "Time", value: loc.timeLabel, tone: "terracotta" },
+              { icon: <MapPinIcon />, label: "Location", value: loc.location, tone: "green" },
+            ] as const;
 
-          <dl className="grid divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {DETAILS.map((d) => (
+            return (
               <div
-                key={d.label}
-                className="flex flex-col items-center px-5 py-5 sm:px-4"
+                key={loc.name}
+                className="overflow-hidden rounded-2xl bg-transparent ring-1 ring-ink/10"
               >
                 <span
-                  className={`flex h-9 w-9 items-center justify-center rounded-full ${TONE_CLASSES[d.tone]}`}
-                >
-                  <span className="h-4 w-4">{d.icon}</span>
-                </span>
+                  aria-hidden="true"
+                  className="block h-0.5 bg-gradient-to-r from-green/50 via-terracotta/50 to-green/50"
+                />
 
-                <dt className="mt-3 text-[9px] font-bold tracking-[0.18em] text-ink/60 uppercase">
-                  {d.label}
-                </dt>
-                <dd className="font-display mt-1 text-center text-sm font-semibold leading-snug text-ink text-balance">
-                  {d.value}
-                </dd>
+                {locations.length > 1 && (
+                  <p className="pt-4 text-center text-xs font-bold tracking-[0.2em] text-terracotta uppercase">
+                    {loc.name}
+                  </p>
+                )}
+
+                <dl className="grid divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                  {details.map((d) => (
+                    <div
+                      key={d.label}
+                      className="flex flex-col items-center px-5 py-5 sm:px-4"
+                    >
+                      <span
+                        className={`flex h-9 w-9 items-center justify-center rounded-full ${TONE_CLASSES[d.tone]}`}
+                      >
+                        <span className="h-4 w-4">{d.icon}</span>
+                      </span>
+
+                      <dt className="mt-3 text-[9px] font-bold tracking-[0.18em] text-ink/60 uppercase">
+                        {d.label}
+                      </dt>
+                      <dd className="font-display mt-1 text-center text-sm font-semibold leading-snug text-ink text-balance">
+                        {d.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
-            ))}
-          </dl>
+            );
+          })}
         </div>
 
         <div className="mt-9">

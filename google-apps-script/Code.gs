@@ -31,6 +31,8 @@ const SHEET_HEADERS = [
   "UTR / Transaction ID",
   "Payment Screenshot Drive Link",
   "Status",
+  "Event Location",
+  "Event Date",
 ];
 
 const LEADS_SHEET_NAME = "General Leads";
@@ -136,6 +138,7 @@ function doPost(e) {
 
 function validatePayload_(p) {
   if (!p.fullName || !p.email || !p.contactNumber) return "Missing required fields.";
+  if (!p.eventLocation || !p.eventDate) return "Please select an event location.";
   if (!p.ticketType || typeof p.amount !== "number") return "Invalid ticket selection.";
   if (!p.screenshotBase64) return "Payment screenshot is required.";
   if (p.consentAgreed !== true) return "Consent is required.";
@@ -474,6 +477,8 @@ function appendRow_(sheet, payload, registrationNo, driveLink) {
     payload.utr || "",
     driveLink,
     "Pending Verification",
+    payload.eventLocation || "",
+    payload.eventDate || "",
   ]);
 }
 
