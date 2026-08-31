@@ -4,10 +4,10 @@ export const EVENT = {
   title: "One Day Retreat",
   tagline: "A Wellness Experience",
   motto: "Pause. Reset. Realign.",
-  dateLabel: "30th August 2026, Sunday",
-  timeLabel: "9:30 AM – 5:00 PM",
-  location: "Sukha Yoga & Wellness, Chennai, Greater Chennai, Tamil Nadu",
-  city: "Chennai",
+  dateLabel: "6th September 2026, Sunday",
+  timeLabel: "9:00 AM – 6:00 PM",
+  location: "Foothills Open Learning Centre, Salem, Tamil Nadu",
+  city: "Salem",
   year: 2026,
   /**
    * Numbers printed on the event poster. The first is also `CONTACT.phone` in
@@ -31,20 +31,6 @@ export const TICKETS = {
 } as const;
 
 export type TicketId = keyof typeof TICKETS;
-
-/** The two retreat dates currently open for registration. */
-export const EVENT_LOCATIONS = [
-  {
-    city: "Chennai",
-    dateLabel: "30th August 2026 (Sunday)",
-    label: "Chennai – 30th August 2026 (Sunday)",
-  },
-  {
-    city: "Salem",
-    dateLabel: "6th September 2026 (Sunday)",
-    label: "Salem – 6th September 2026 (Sunday)",
-  },
-] as const;
 
 export const MAX_SCREENSHOT_SIZE_BYTES = 5 * 1024 * 1024;
 export const ALLOWED_SCREENSHOT_TYPES = ["image/jpeg", "image/png", "image/jpg"];

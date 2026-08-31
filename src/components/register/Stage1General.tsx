@@ -1,26 +1,13 @@
 import { Stage1Data } from "@/lib/types";
-import { EVENT_LOCATIONS } from "@/lib/constants";
-import { SelectField, TextField } from "./FormFields";
-
-interface EventLocationField {
-  value: string;
-  error?: string;
-  onChange: (value: string) => void;
-}
+import { TextField } from "./FormFields";
 
 interface Props {
   data: Stage1Data;
   errors: Record<string, string>;
   onChange: (patch: Partial<Stage1Data>) => void;
-  /**
-   * Only the event-registration flow collects this — the one-to-one
-   * booking form reuses this component without it, so the field simply
-   * doesn't render there.
-   */
-  eventLocation?: EventLocationField;
 }
 
-export default function Stage1General({ data, errors, onChange, eventLocation }: Props) {
+export default function Stage1General({ data, errors, onChange }: Props) {
   return (
     <div className="space-y-5">
       <div>
@@ -29,18 +16,6 @@ export default function Stage1General({ data, errors, onChange, eventLocation }:
           Let&apos;s start with the basics — this helps us prepare for your visit.
         </p>
       </div>
-
-      {eventLocation && (
-        <SelectField
-          id="eventLocation"
-          label="Select Event Location"
-          placeholder="Select your event location"
-          options={EVENT_LOCATIONS.map((l) => l.label)}
-          value={eventLocation.value}
-          error={eventLocation.error}
-          onChange={(e) => eventLocation.onChange(e.target.value)}
-        />
-      )}
 
       <TextField
         id="fullName"

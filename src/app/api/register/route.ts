@@ -4,7 +4,7 @@ import {
   MAX_SCREENSHOT_SIZE_BYTES,
   ALLOWED_SCREENSHOT_TYPES,
   TICKETS,
-  EVENT_LOCATIONS,
+  EVENT,
 } from "@/lib/constants";
 
 export const runtime = "nodejs";
@@ -57,10 +57,8 @@ function validate(body: Partial<RegisterRequestBody>): string | null {
 
   if (body.consentAgreed !== true) return "You must confirm and agree to the consent statement.";
 
-  const validLocation = EVENT_LOCATIONS.some(
-    (l) => l.city === body.eventLocation && l.dateLabel === body.eventDate
-  );
-  if (!validLocation) return "Please select a valid event location.";
+  if (body.eventLocation !== EVENT.city || body.eventDate !== EVENT.dateLabel)
+    return "Please select a valid event location.";
 
   const validTicket = Object.values(TICKETS).find(
     (t) => t.ticketType === body.ticketType && t.amount === body.amount
