@@ -5,6 +5,9 @@ export const EVENT = {
   tagline: "A Wellness Experience",
   motto: "Pause. Reset. Realign.",
   dateLabel: "6th September 2026, Sunday",
+  /** Public-facing stand-in shown on the site while the date isn't finalized.
+   *  Registration/PDF/API keep using `dateLabel` — this is display-only. */
+  dateAnnouncement: "Coming Soon",
   timeLabel: "9:00 AM – 6:00 PM",
   location: "Foothills Open Learning Centre, Salem, Tamil Nadu",
   city: "Salem",

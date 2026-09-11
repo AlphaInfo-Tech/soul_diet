@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="relative">
         <p className="font-display text-lg text-cream-light">{EVENT.name}</p>
         <p className="mt-2">
-          {EVENT.dateLabel} · {EVENT.timeLabel} · {EVENT.location}
+          {EVENT.dateAnnouncement} · {EVENT.timeLabel} · {EVENT.location}
         </p>
         <p className="mt-4">
           © {EVENT.year} Soul Diet. All rights reserved.
