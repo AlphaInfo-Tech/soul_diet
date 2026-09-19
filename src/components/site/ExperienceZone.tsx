@@ -31,15 +31,15 @@ interface Accent {
 const ACCENTS: Record<string, Accent> = {
   "soul-diet-21": {
     primary: "var(--color-green)",
-    pale: "#dfe6dc",
-    card: "#eef1e9",
-    sand: "#c9d4c4",
+    pale: "#f0d9c9",
+    card: "#faf0e8",
+    sand: "#e0b79a",
   },
   "mental-fitness": {
     primary: "var(--color-green-light)",
-    pale: "#e2e9de",
-    card: "#f0f3ec",
-    sand: "#cfdac9",
+    pale: "#f3ddd0",
+    card: "#faf1ea",
+    sand: "#e2bfa8",
   },
   "guided-meditation": {
     primary: "var(--color-sand)",

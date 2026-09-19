@@ -3,7 +3,7 @@
 :root {
   /* Mirrors --color-cream-light / --color-ink below. The body is painted here
      and nowhere else, so a page never has to restate its own background. */
-  --background: #f7f2e7;
+  --background: #f9f0e4;
   --foreground: #2b2a22;
 }
 
@@ -15,13 +15,15 @@
 
   /* The `cream` section surface. Deep enough that the seam against a `light`
      section reads on screen — the two sit at roughly 1.34:1. */
-  --color-cream: #d8c9a6;
-  --color-cream-light: #f7f2e7;
+  --color-cream: #e3c7a3;
+  --color-cream-light: #f9f0e4;
   /* Kept a step below `cream` so the ramp stays ordered; hover states only. */
-  --color-cream-dark: #cfbf99;
-  --color-green: #4a5d45;
-  --color-green-dark: #384633;
-  --color-green-light: #6c7f63;
+  --color-cream-dark: #d6ab7e;
+  /* Rust-orange brand primary. Kept the `green` name to avoid touching every
+     bg-green/text-green call site across the app — only the values changed. */
+  --color-green: #b7410e;
+  --color-green-dark: #8a3009;
+  --color-green-light: #d97a4a;
   --color-terracotta: #b5654a;
   --color-ink: #2b2a22;
   /* Warm accents used by the per-service tinting in ExperienceZone. */
