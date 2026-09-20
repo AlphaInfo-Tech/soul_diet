@@ -4,12 +4,10 @@ export const EVENT = {
   title: "One Day Retreat",
   tagline: "A Wellness Experience",
   motto: "Pause. Reset. Realign.",
-  dateLabel: "6th September 2026, Sunday",
-  /** Public-facing stand-in shown on the site while the date isn't finalized.
-   *  Registration/PDF/API keep using `dateLabel` — this is display-only. */
-  dateAnnouncement: "Coming Soon",
-  timeLabel: "9:00 AM – 6:00 PM",
-  location: "Foothills Open Learning Centre, Salem, Tamil Nadu",
+  dateLabel: "27th September 2026, Sunday",
+  timeLabel: "5:30 PM – 7:30 PM",
+  location:
+    "Yoga Mithraa Block No. 5, Part Senthil, 115/9, Public School Road, Jagir Ammapalayam, Salem, Tamil Nadu 636302",
   city: "Salem",
   year: 2026,
   /**
@@ -27,8 +25,8 @@ export const TICKETS = {
   ONE_DAY_RETREAT: {
     id: "ONE_DAY_RETREAT",
     label: "One Day Retreat",
-    fullLabel: "One Day Retreat – ₹5,999",
-    amount: 5999,
+    fullLabel: "One Day Retreat – ₹1,299",
+    amount: 1299,
     ticketType: "One Day Retreat",
   },
 } as const;

@@ -4,7 +4,7 @@ import { EVENT } from "@/lib/constants";
 import { CalendarIcon, ClockIcon, MapPinIcon } from "@/components/icons/WellnessIcons";
 
 const DETAILS = [
-  { icon: <CalendarIcon />, label: "Date", value: EVENT.dateAnnouncement, tone: "green" },
+  { icon: <CalendarIcon />, label: "Date", value: EVENT.dateLabel, tone: "green" },
   { icon: <ClockIcon />, label: "Time", value: EVENT.timeLabel, tone: "terracotta" },
   { icon: <MapPinIcon />, label: "Location", value: EVENT.location, tone: "green" },
 ] as const;
