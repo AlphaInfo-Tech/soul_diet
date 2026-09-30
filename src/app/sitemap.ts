@@ -16,6 +16,8 @@ const ROUTES: {
   { path: "/event", priority: 0.9, changeFrequency: "weekly" },
   { path: "/register", priority: 0.8, changeFrequency: "weekly" },
   { path: "/one-to-one", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
+  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

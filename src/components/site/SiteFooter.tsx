@@ -90,13 +90,28 @@ export default function SiteFooter() {
           </FooterColumn>
         </div>
 
-        <div className="mt-12 border-t border-cream-light/15 pt-6 text-sm sm:flex sm:items-center sm:justify-between">
-          <p>
-            © {EVENT.year} {SITE.name}. All rights reserved.
-          </p>
-          <p className="mt-2 sm:mt-0">
-            Guided by <span className="text-cream-light">{SITE.founder}</span>
-          </p>
+        <div className="mt-12 flex flex-col gap-4 border-t border-cream-light/15 pt-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p>
+              © {EVENT.year} {SITE.name}. All rights reserved.
+            </p>
+            <p className="mt-2">
+              Guided by <span className="text-cream-light">{SITE.founder}</span>
+            </p>
+          </div>
+
+          <ul className="flex items-center gap-4">
+            <li>
+              <Link href="/terms" className="transition-colors hover:text-cream-light">
+                Terms & Conditions
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="transition-colors hover:text-cream-light">
+                Privacy Policy
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>
