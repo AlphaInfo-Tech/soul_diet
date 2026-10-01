@@ -27,8 +27,8 @@ export default function FloatingCta() {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-6 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] lg:hidden">
       <div
-        className={`pointer-events-auto mx-auto flex w-fit max-w-full items-center gap-1.5 rounded-full border border-ink/10 bg-cream-light/95 p-1.5 shadow-xl shadow-ink/15 backdrop-blur transition-opacity duration-200 ${
-          visible ? "opacity-100" : "opacity-0"
+        className={`mx-auto flex w-fit max-w-full items-center gap-1.5 rounded-full border border-ink/10 bg-cream-light/95 p-1.5 shadow-xl shadow-ink/15 backdrop-blur transition-opacity duration-200 ${
+          visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         <Link href={ONE_TO_ONE_HREF}>
