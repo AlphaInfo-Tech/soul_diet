@@ -23,9 +23,8 @@ export const CONTACT = {
   phoneHref: "tel:+917759988447",
   email: "info@souldiet.in",
   whatsapp: "https://wa.me/917759988447",
-  // TODO: real value needed — confirm city / studio address
-  city: "Salem, Tamil Nadu",
-  addressLines: ["Salem", "Tamil Nadu, India"],
+  city: "2180, Machuvadi, Balaji Nagar, Pudukottai, Tamil Nadu - 622004",
+  addressLines: ["2180, Machuvadi, Balaji Nagar", "Pudukottai, Tamil Nadu - 622004"],
   instagram:
     "https://www.instagram.com/souldiet.adietinwhichugain?igsh=MWxtOGo0N3RxcWVsMg==",
   soundForSoul: "https://soundforsoul.in/",

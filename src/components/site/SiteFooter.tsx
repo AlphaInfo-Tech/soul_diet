@@ -93,7 +93,7 @@ export default function SiteFooter() {
         <div className="mt-12 flex flex-col gap-4 border-t border-cream-light/15 pt-6 text-sm sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p>
-              © {EVENT.year} {SITE.name}. All rights reserved.
+              © {EVENT.year} {SITE.name}. All rights reserved. — GMAK
             </p>
             <p className="mt-2">
               Guided by <span className="text-cream-light">{SITE.founder}</span>

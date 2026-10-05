@@ -40,7 +40,7 @@ const CHANNELS = [
   },
   {
     Icon: MapPinIcon,
-    label: "Based in",
+    label: "Address",
     value: CONTACT.city,
     href: null,
   },
